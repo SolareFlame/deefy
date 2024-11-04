@@ -27,10 +27,10 @@ class AddUserAction extends Action {
     public function executeGet(): string
     {
         return <<<FORM
-            <form action='index.php?action=add-user' method='POST'>
+            <form action='index.php?action=new-user' method='POST'>
             <input type='text' name='email' placeholder='Votre adresse mail' required>
             <input type='text' name='mdp' placeholder='Votre mot de passe' required>
-            <input type='submit' value='Créer un user'>
+            <input type='submit' value='Enregistrement'>
             </form>
         FORM;
     }

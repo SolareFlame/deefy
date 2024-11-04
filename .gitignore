@@ -3,3 +3,6 @@ audio/
 
 db.config.ini
 
+composer.lock
+vendor/
+
