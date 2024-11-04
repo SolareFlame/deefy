@@ -1,4 +1,4 @@
-# 🎵 DEEFY
+# ![Logo de Deefy](images/logo2.png) DEEFY
 
 Cette application permet aux utilisateurs de créer, gérer et personnaliser leurs playlists musicales. Elle offre un ensemble de fonctionnalités intuitives accessibles depuis un menu d'accueil convivial.
 
