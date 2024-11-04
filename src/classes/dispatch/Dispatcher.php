@@ -73,7 +73,7 @@ class Dispatcher {
         $connected = isset($_SESSION['user']);
         $admin = isset($_SESSION['user']) && AuthnProvider::asPermission($_SESSION['user'], 100);
 
-        echo <<<HTML
+        $res = <<<HTML
     <!DOCTYPE html>
     <html lang="fr">
     <head>
@@ -84,7 +84,10 @@ class Dispatcher {
     </head>
     <body>
         <header>
-            <h1>Deefy</h1>
+            <div class="title">
+                <img src="images/logo2.png" alt="Logo de Deefy">
+                <h1>Deefy</h1>   
+            </div>
             <nav>
                 <form action="index.php" method="GET">
                     <input type="hidden" name="action" value="search">
@@ -100,22 +103,22 @@ class Dispatcher {
 HTML;
 
         if ($connected) {
-            echo <<<HTML
+            $res .= <<<HTML
             <li><a href="?action=new-playlist">Creer une playlist</a></li>
             <li><a href="?action=library">Bibliothèque</a></li>
             <li><a href="?action=playlist">Playlist en session</a></li>
             <li><a href="?action=signout">Se deconnecter</a></li>
 HTML;
         } else {
-            echo '<li><a href="?action=signin">Se connecter</a></li>';
-            echo '<li><a href="?action=new-user">Creer un compte</a></li>';
+            $res .= '<li><a href="?action=signin">Se connecter</a></li>';
+            $res .= '<li><a href="?action=new-user">Creer un compte</a></li>';
         }
 
         if ($admin) {
-            echo '<li><a href="?action=add-track">Ajouter un track</a></li>';
+            $res .= '<li><a href="?action=add-track">Ajouter un track</a></li>';
         }
 
-        echo <<<HTML
+        $res .= <<<HTML
                 </ul>
             </nav>
         </header>
@@ -128,6 +131,7 @@ HTML;
     </body>
     </html>
 HTML;
+        echo $res;
     }
 
 }
