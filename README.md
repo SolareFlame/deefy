@@ -4,10 +4,10 @@ Cette application permet aux utilisateurs de créer, gérer et personnaliser leu
 
 ## 📋 Fonctionnalités
 
-- ### Bibliothèque
+[^1] ### Bibliothèque
 - Affiche la liste des playlists de l’utilisateur authentifié ; chaque élément de la liste est cliquable et permet d’afficher une playlist qui devient la playlist courante, stockée en session.
 
-### Créer une Playlist
+[^2] ### Créer une Playlist
 - Un formulaire permettant de saisir le nom d’une nouvelle playlist est affiché. À la validation, la playlist est créée et stockée en base de données ; elle devient la playlist courante.
 
 ### Playlist en session
@@ -31,12 +31,5 @@ Cette application permet aux utilisateurs de créer, gérer et personnaliser leu
 - **Sécurité** : 
   - Les mots de passe sont stockés de manière sécurisée (hash + salt)
   - Des protections contre l’injection XSS (filter_var) et SQL (requetes préparées) sont mises en place.
-
-
-
-
-HEUERTZ Zacharie
-
-
 
 
