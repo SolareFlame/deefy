@@ -1,4 +1,4 @@
-# <img src="images/logo2.png" alt="Logo de Deefy" width="75"/> DEEFY
+# <img src="images/logo2.png" alt="Logo de Deefy" width="75"/> <h1>Deefy</h1>
 
 Cette application permet aux utilisateurs de créer, gérer et personnaliser leurs playlists musicales. Elle offre un ensemble de fonctionnalités intuitives accessibles depuis un menu d'accueil convivial.
 
