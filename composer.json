@@ -1,0 +1,17 @@
+{
+  "name": "iutnc/deefy",
+  "description": "poulet",
+  "type": "project",
+
+  "autoload": {
+    "psr-4": {
+      "iutnc\\deefy\\conf\\" : "./conf",
+      "iutnc\\deefy\\" : "./src/classes"
+    }
+  },
+  "require": {
+    "james-heinrich/getid3": "^1.9",
+    "ext-pdo": "*",
+    "ramsey/uuid": "^4.0"
+  }
+}
