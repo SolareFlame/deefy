@@ -1,31 +1,24 @@
-/* Global Styles */
 body {
     font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    background-color: #1a1a1a; /* Fond sombre */
-    color: #eaeaea; /* Texte clair */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 2.5em;
-    color: #ffffff; /* Titre blanc */
-}
-
-/* Header */
 header {
-    background-color: #333; /* Couleur de fond plus sombre */
-    color: #ffffff;
-    padding: 20px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background-color: #6a5acd;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    text-align: center;
 }
 
 nav ul li {
@@ -34,128 +27,97 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #ffffff; /* Liens en blanc */
+    color: white;
     text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Fond transparent au survol */
-    transform: scale(1.05);
+nav form {
+    display: inline;
 }
 
-/* Main Content */
 main {
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background: #2a2a2a; /* Fond principal plus clair que le corps */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    flex: 1;
 }
 
-main h2 {
-    margin-top: 20px;
-    font-size: 2em;
-    color: #ffffff; /* Titre en blanc */
-}
-
-/* Podcast Renderer Styles */
-.compact-view, .large-view {
-    border: 1px solid #444; /* Bordure légèrement plus claire */
-    border-radius: 8px;
-    padding: 15px;
-    margin: 10px 0;
-    background-color: #3a3a3a; /* Fond des pistes */
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
-}
-
-.compact-view p, .large-view p {
-    margin: 5px 0;
-    color: #eaeaea; /* Texte clair */
-}
-
-.audio-controls {
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* Form Styles */
 form {
     margin: 20px 0;
-    padding: 15px;
-    background-color: #3a3a3a; /* Fond du formulaire */
-    border: 1px solid #444; /* Bordure plus claire */
-    border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-form input[type="text"] {
-    width: calc(100% - 20px); /* Full width minus padding */
+input[type="text"] {
     padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #666; /* Bordure gris */
+    border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #2a2a2a; /* Fond du champ de texte */
-    color: #eaeaea; /* Texte clair */
-    transition: border-color 0.3s ease;
+    width: 250px;
+    transition: border 0.3s;
 }
 
-form input[type="text"]:focus {
-    border-color: #933bdb; /* Bordure colorée au focus */
+input[type="text"]:focus {
+    border: 1px solid #6a5acd;
+    outline: none;
 }
 
-form input[type="submit"] {
-    background-color: #933bdb; /* Couleur de fond des boutons */
-    color: white;
+button {
+    padding: 10px 20px;
     border: none;
-    padding: 10px 15px;
     border-radius: 5px;
+    background-color: #6a5acd;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
 }
 
-form input[type="submit"]:hover {
-    background-color: #7a2cb1; /* Couleur plus foncée au survol */
-    transform: scale(1.05);
+button:hover {
+    background-color: #5b4bbf;
+    transform: translateY(-2px);
 }
 
-/* Footer */
+audio {
+    width: 80%;
+    margin-top: 10px;
+    outline: none;
+}
+
+.compact-view {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.large-view {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.large-view p {
+    margin: 5px 0;
+}
+
 footer {
     text-align: center;
-    padding: 10px 0;
-    background-color: #333; /* Fond du pied de page */
-    color: #ffffff; /* Texte en blanc */
-    position: relative;
-    bottom: 0;
+    padding: 1rem 0;
+    background-color: #6a5acd;
+    color: white;
     width: 100%;
 }
 
-/* Animation for the footer */
-footer p {
-    animation: fadeIn 1s ease-in;
-}
-
-/* Keyframes for fadeIn animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Responsive Styles */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     nav ul li {
         display: block;
         margin: 10px 0;
     }
 
-    h1 {
-        font-size: 2em;
+    input[type="text"], button {
+        width: 100%;
+    }
+
+    audio {
+        width: 100%;
     }
 }

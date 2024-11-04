@@ -7,32 +7,52 @@ use iutnc\deefy\audio\lists as lists;
 use iutnc\deefy\audio\tracks as tracks;
 use iutnc\deefy\exception as exception;
 use iutnc\deefy\renderer as renderer;
+use iutnc\deefy\repository\DeefyRepository;
 
 class DisplayPlaylistAction extends Action {
-
-    //AFFICHER LA PLAYLIST EN SESSION
-    public function executePost(): string
-    {
-        if(isset($_SESSION['playlist'])){
-            $playlist = $_SESSION['playlist'];
-            $renderer = new renderer\AudioListRenderer($playlist);
-            return $renderer->render(1);
-
-        } else {
-            return "Aucune playlist en session";
-        }
-    }
-
-    //AFFICHER LA PLAYLIST EN SESSION
     public function executeGet(): string
     {
-        if(isset($_SESSION['playlist'])){
-            $playlist = $_SESSION['playlist'];
-            $renderer = new renderer\AudioListRenderer($playlist);
-            return $renderer->render(2);
+        $instance = DeefyRepository::getInstance();
 
-        } else {
-            return "Aucune playlist en session";
+        if(!isset($_SESSION['user'])){
+            return "Vous devez être connecté pour accéder à cette page";
         }
+
+        if (isset($_GET['id']) && $_GET['id'] !== '') {
+            $id = $_GET['id'];
+
+            //si il n'est pas propriétaire ou pas admin
+            if(!$instance->isPlaylistOwner($_SESSION['user'], $id) && !$instance->asPermission($_SESSION['user'], 100)){
+                return "Vous n'avez pas les droits pour accéder à cette page";
+            }
+
+            try {
+                $playlist = $instance->findPlaylistById($id);
+            } catch (\Exception $e) {
+                return "Aucune playlist trouvée avec l'ID fourni";
+            }
+
+            if ($playlist === null) {
+                return "Aucune playlist trouvée avec l'ID fourni";
+            }
+
+            $_SESSION['playlist'] = $playlist;
+        } else {
+            $playlist = $_SESSION['playlist'] ?? null;
+
+            if ($playlist === null) {
+                return "Aucune playlist en session";
+            }
+        }
+
+        $renderer = new renderer\AudioListRenderer($playlist);
+
+        return $renderer->render(2);
     }
+
+    public function executePost(): string
+    {
+        return $this->executeGet();
+    }
+
 }

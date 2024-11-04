@@ -8,30 +8,45 @@ use iutnc\deefy\repository\DeefyRepository;
 class AuthnProvider {
 
     public static function signin(string $email,
-                                  string $passwd2check): void {
+                                  string $passwd2check): string {
 
+        \iutnc\deefy\repository\DeefyRepository::setConfig('db.config.ini');
         $instance = DeefyRepository::getInstance();
 
         try {
-            $instance->getUserInfoByEmail($email);
+            $userInfo = $instance->getUserInfoByEmail($email);
+
+            if (empty($userInfo)) {
+                return "Erreur de connexion, mot de passe ou email incorrect";
+            }
+
+            $userData = $userInfo[0];
         } catch (\Exception $e) {
-            throw new AuthnException("Auth error : invalid credentials");
+            return "Erreur de connexion, mot de passe ou email incorrect";
         }
 
-        $hash = $instance->getUserInfoByEmail($email)['passwd'];
+        $hash = $userData['passwd'];
 
-        if (!password_verify($passwd2check, $hash))
-            throw new AuthnException("Auth error : invalid credentials");
-        return;
+        if (!password_verify($passwd2check, $hash)) {
+            return "Erreur de connexion, mot de passe ou email incorrect";
+        } else {
+            $_SESSION['user'] = $userData['uuid'];
+            return "Connexion réussie";
+        }
     }
+
     public static function register(string $email,
                                      string $pass): string {
 
         $instance = DeefyRepository::getInstance();
 
         /* ACCOUNT VALIDATION */
-        if($instance->getUserInfoByEmail($email) != null)
+        try {
+            if($instance->getUserInfoByEmail($email) != null)
+                throw new AuthnException(" error : user already exists");
+        } catch (\Exception $e) {
             throw new AuthnException(" error : user already exists");
+        }
 
         /* MAIL VALIDATION */
         if (! filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -61,5 +76,10 @@ class AuthnProvider {
 
     public static function signout(): void {
         session_destroy();
+    }
+
+    public static function asPermission(string $uuid, int $permission): bool {
+        $instance = DeefyRepository::getInstance();
+        return $instance->asPermission($uuid, $permission);
     }
 }

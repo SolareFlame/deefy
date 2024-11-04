@@ -4,10 +4,10 @@ namespace iutnc\deefy\renderer;
 
 class PodcastRenderer extends AudioTrackRenderer
 {
-    public function render_short(): string
+    function render_short(): string
     {
-        $title = $this->audio_track->file_name;
-        $file_path = $this->audio_track->file_path;
+        $title = $this->audio_track->title;
+        $file_path = $this->audio_track->file_name;
 
         $result = '<div class="compact-view">';
         $result .= '<p>Title: ' . $title . '</p>';
@@ -17,22 +17,37 @@ class PodcastRenderer extends AudioTrackRenderer
         return $result;
     }
 
-    public function render_long(): string
+    function render_long(): string
     {
-        $title = $this->audio_track->file_name;
-        $file_path = $this->audio_track->file_path;
+        $title = $this->audio_track->title;
+        $gender = $this->audio_track->gender;
         $duration = $this->audio_track->duration;
-        $artist = $this->audio_track->creator;
-        $date = $this->audio_track->date;
+        $artists = $this->audio_track->artists;
+        $year = $this->audio_track->date;
 
-        $result = '<div class="large-view">';
-        $result .= '<p>Title: ' . $title . '</p>';
-        $result .= '<p>Artist: ' . $artist . '</p>';
-        $result .= '<p>Year: ' . $date . '</p>';
-        $result .= '<p>Duration: ' . $duration . '</p>';
-        $result .= '<audio controls src="' . $file_path . '"></audio>';
-        $result .= '</div>';
+        $artists_list = implode(', ', $artists);
+
+        $file_path = $this->audio_track->file_name;
+
+        $result = <<<HTML
+    <div class="large-view">
+        <p>Titre Podcast: $title</p>
+        <p>Genre: $gender</p>
+        <p>Durée: $duration seconds</p>
+        <p>Artistes: $artists_list</p>
+        <p>Année: $year</p>
+        <audio controls>
+            <source src="$file_path" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
+HTML;
 
         return $result;
     }
+
 }
+
+
+
+

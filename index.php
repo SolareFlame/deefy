@@ -1,6 +1,5 @@
 <?php
 
-//require_once 'autoloader.php';
 require_once 'vendor/autoload.php';
 
 
@@ -15,8 +14,10 @@ use iutnc\deefy\exception as exception;
 use iutnc\deefy\renderer as renderer;
 use iutnc\deefy\action as action;
 use iutnc\deefy\dispatch as dispatch;
+use iutnc\deefy\repository as repository;
 
 session_start();
+repository\DeefyRepository::setConfig('db.config.ini');
 
 $dispatcher = new dispatch\Dispatcher($_GET['action'] ?? 'default');
 $dispatcher->run();

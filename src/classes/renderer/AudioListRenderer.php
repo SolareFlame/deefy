@@ -15,13 +15,12 @@ class AudioListRenderer implements Renderer
 
     public function render(int $selector): string
     {
-        $title = $this->audio_list->__get("name");
-
+        $title = $this->audio_list->name;
 
         $result = '<div class="compact-view">';
         $result .= '<p>Title: ' . $title . '</p>';
 
-        foreach ($this->audio_list->__get("tracks") as $track) {
+        foreach ($this->audio_list->tracks as $track) {
 
             if($track instanceof tracks\PodcastTrack) {
                 $renderer = new PodcastRenderer($track);
@@ -32,7 +31,23 @@ class AudioListRenderer implements Renderer
                 $renderer = new AlbumTrackRenderer($track);
                 $result .= $renderer->render($selector);
             }
+
+            $result .= <<<HTML
+            <form action="?action=delete" method="post">
+                <input type="hidden" name="track_id" value="{$track->uuid}">
+                <input type="hidden" name="pl_id" value="{$this->audio_list->uuid}">
+                <input type="submit" value="Supprimer la musique">
+            </form>
+HTML;
         }
+
+        $result .= <<<HTML
+            <form action="?action=delete-playlist" method="post">
+                <input type="hidden" name="pl_id" value="{$this->audio_list->uuid}">
+                <input type="submit" value="Supprimer la playlist">
+HTML;
+
+        $result .= '</div>';
 
         return $result;
     }

@@ -7,8 +7,10 @@ require_once 'vendor/autoload.php';
 use iutnc\deefy\action as action;
 use iutnc\deefy\audio\lists as lists;
 use iutnc\deefy\audio\tracks as tracks;
+use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception as exception;
 use iutnc\deefy\renderer as renderer;
+use iutnc\deefy\repository\DeefyRepository;
 
 
 class Dispatcher {
@@ -21,18 +23,46 @@ class Dispatcher {
 
     function run(): void {
         switch ($this->action) {
-            case 'add-playlist':
+            //ACCUEIL
+            case 'new-playlist': //CREER UNE PLAYLIST
                 $this->renderPage((new action\AddPlaylistAction())());
                 break;
-            case 'add-track':
-                $this->renderPage((new action\AddPodcastTrackAction())());
+            case 'library': //AFFICHER LA BIBLIOTHEQUE DE PLAYLIST
+                $this->renderPage((new action\DisplayLibraryAction())());
                 break;
-            case 'playlist':
+            case 'playlist': //AFFICHER LA PLAYLIST EN SESSION
                 $this->renderPage((new action\DisplayPlaylistAction())());
                 break;
-            case 'add-user':
+
+            //ADMIN
+            case 'add-track':
+                $this->renderPage((new action\addTrackAction())());
+                break;
+
+            //USER
+            case 'signin': //SE CONNECTER
+                $this->renderPage((new action\SignInAction())());
+                break;
+            case 'signout': //SE DECONNECTER
+                $this->renderPage((new action\SignOutAction())());
+                break;
+            case 'new-user': //CREER UN COMPTE
                 $this->renderPage((new action\AddUserAction())());
                 break;
+
+            case 'search': //RECHERCHER
+                $this->renderPage((new action\SearchAction())());
+                break;
+            case 'save':
+                $this->renderPage((new action\SavePlaylistAction())());
+                break;
+            case 'delete':
+                $this->renderPage((new action\DeleteTrackAction())());
+                break;
+            case 'delete-playlist':
+                $this->renderPage((new action\DeletePlaylistAction())());
+                break;
+
             default:
                 $this->renderPage((new action\DefaultAction())());
                 break;
@@ -40,35 +70,64 @@ class Dispatcher {
     }
 
     function renderPage(string $html): void {
+        $connected = isset($_SESSION['user']);
+        $admin = isset($_SESSION['user']) && AuthnProvider::asPermission($_SESSION['user'], 100);
+
         echo <<<HTML
-        <!DOCTYPE html>
-        <html lang="fr">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Deefy</title>
-            <link rel="stylesheet" href="style.css">
-        </head>
-        <body>
-            <header>
-                <h1>Deefy</h1>
-                <nav>
-                    <ul>
-                        <li><a href="?action=default">Accueil</a></li>
-                        <li><a href="?action=add-playlist">Ajouter une playlist</a></li>
-                        <li><a href="?action=add-track">Ajouter un podcast</a></li>
-                        <li><a href="?action=playlist">Afficher la playlist</a></li>
-                        <li><a href="?action=add-user">Ajouter un utilisateur</a></li>
-                    </ul>
-                </nav>
-            </header>
-            <main>
-                $html
-            </main>
-            <footer>
-                <p>&copy; 2024 - Deefy</p>
-            </footer>
-        </body>
-        HTML;
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Deefy</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Deefy</h1>
+            <nav>
+                <form action="index.php" method="GET">
+                    <input type="hidden" name="action" value="search">
+                    <input type="text" name="query" placeholder="Rechercher..." required>
+                    <button type="submit">Rechercher</button>
+                </form>
+                    
+                <ul>
+                    <li><a href="?action=default">Accueil</a></li>
+                    
+                    
+                    
+HTML;
+
+        if ($connected) {
+            echo <<<HTML
+            <li><a href="?action=new-playlist">Creer une playlist</a></li>
+            <li><a href="?action=library">Bibliothèque</a></li>
+            <li><a href="?action=playlist">Playlist en session</a></li>
+            <li><a href="?action=signout">Se deconnecter</a></li>
+HTML;
+        } else {
+            echo '<li><a href="?action=signin">Se connecter</a></li>';
+            echo '<li><a href="?action=new-user">Creer un compte</a></li>';
+        }
+
+        if ($admin) {
+            echo '<li><a href="?action=add-track">Ajouter un track</a></li>';
+        }
+
+        echo <<<HTML
+                </ul>
+            </nav>
+        </header>
+        <main>
+            $html
+        </main>
+        <footer>
+            <p>&copy; 2024 - Deefy</p>
+        </footer>
+    </body>
+    </html>
+HTML;
     }
+
 }
