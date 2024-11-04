@@ -2,6 +2,9 @@
 
 Cette application permet aux utilisateurs de créer, gérer et personnaliser leurs playlists musicales. Elle offre un ensemble de fonctionnalités intuitives accessibles depuis un menu d'accueil convivial.
 
+> [!WARNING]
+> Il faudra le répertoire audio/, dans lequel les musiques sont stockées pour que le projet soit fonctionnel.
+
 ## 📋 Fonctionnalités
 
 **1. Bibliothèque**
