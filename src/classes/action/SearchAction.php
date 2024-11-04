@@ -23,7 +23,8 @@ class SearchAction extends Action {
                 return "Aucun track trouvé avec la recherche fournie";
             }
 
-            $result = '';
+            $result = 'Résultats de la recherche pour : ' . htmlspecialchars($_GET['query']) . '<br>';
+            $result .= 'Pistes trouvées : ' . count($tracks) . '<br>';
 
             foreach ($tracks as $track) {
                 if($track instanceof tracks\PodcastTrack) {
