@@ -25,6 +25,10 @@ class SignInAction extends Action {
 
     public function executeGet(): string
     {
+        if(isset($_SESSION['user'])) {
+            return "Vous êtes déjà connecté";
+        }
+
         return <<<FORM
             <form action='index.php?action=signin' method='POST'>
             <input type='text' name='email' placeholder='Votre adresse mail' required>

@@ -52,16 +52,16 @@ class DeefyRepository
 
 
     /*
-     * User management
+     * user management
      */
     /**
      * @param string $email user email
      * @return array user data (id, email, passwrd, role)
      * @throws \Exception
      */
-    public function getUserInfoByEmail(string $email): array
+    public function getuserInfoByEmail(string $email): array
     {
-        $query = "SELECT * FROM User WHERE email = :email";
+        $query = "SELECT * FROM user WHERE email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
 
@@ -73,16 +73,16 @@ class DeefyRepository
         return $row;
     }
 
-    public function getUserInfoByUUID(string $uuid): array
+    public function getuserInfoByUUID(string $uuid): array
     {
-        $query = "SELECT * FROM User WHERE uuid = :uuid";
+        $query = "SELECT * FROM user WHERE uuid = :uuid";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['uuid' => $uuid]);
 
         $row = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if (empty($row)) {
-            throw new \Exception("User not found");
+            throw new \Exception("user not found");
         }
         return $row;
     }
@@ -94,9 +94,9 @@ class DeefyRepository
      * @param int $role role provided
      * @return void
      */
-    public function addUser(string $email, string $hash, int $role): void
+    public function adduser(string $email, string $hash, int $role): void
     {
-        $query = "INSERT INTO User (uuid, email, passwd, role) VALUES (:uuid, :email, :passwd, :role)";
+        $query = "INSERT INTO user (uuid, email, passwd, role) VALUES (:uuid, :email, :passwd, :role)";
         $stmt = $this->pdo->prepare($query);
 
         $uuid = Uuid::uuid4();
@@ -107,7 +107,7 @@ class DeefyRepository
 
     public function asPermission(string $uuid, string $permission): bool
     {
-        $query = "SELECT * FROM User WHERE uuid = :uuid AND role = :role";
+        $query = "SELECT * FROM user WHERE uuid = :uuid AND role = :role";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['uuid' => $uuid, 'role' => $permission]);
 
@@ -194,7 +194,7 @@ class DeefyRepository
         $stmt->execute(['uuid' => $uuid]);
     }
 
-    public function findUserPlaylists(string $uuid): array
+    public function finduserPlaylists(string $uuid): array
     {
         $query = "SELECT uuid_pl FROM user2playlist WHERE uuid_user = :uuid";
         $stmt = $this->pdo->prepare($query);
