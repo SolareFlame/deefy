@@ -132,6 +132,7 @@ HTML;
         </main>
         <footer>
             <p>&copy; 2024 - Deefy</p>
+            <a href="https://github.com/SolareFlame/deefy"><img src="https://skillicons.dev/icons?i=github" /></a>
         </footer>
     </body>
     </html>
