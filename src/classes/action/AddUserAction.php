@@ -18,8 +18,8 @@ class AddUserAction extends Action {
     {
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        $email = $_POST['email'];
-        $mdp = $_POST['mdp'];
+        $email = $_POST['username'];
+        $mdp = $_POST['password'];
 
         return AuthnProvider::register($email, $mdp);
     }
@@ -28,8 +28,8 @@ class AddUserAction extends Action {
     {
         return <<<FORM
             <form action='index.php?action=new-user' method='POST'>
-            <input type='text' name='email' placeholder='Votre adresse mail' required>
-            <input type='text' name='mdp' placeholder='Votre mot de passe' required>
+            <input type='text' name='username' placeholder='Votre adresse mail' required>
+            <input type='password' name='password' placeholder='Votre mot de passe' required>
             <input type='submit' value='Enregistrement'>
             </form>
         FORM;

@@ -42,6 +42,7 @@ class AuthnProvider {
 
         /* ACCOUNT VALIDATION */
         try {
+            print_r($instance->getUserInfoByEmail($email));
             if($instance->getUserInfoByEmail($email) != null)
                 throw new AuthnException(" error : user already exists");
         } catch (\Exception $e) {

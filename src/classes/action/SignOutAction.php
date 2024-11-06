@@ -18,6 +18,10 @@ class SignOutAction extends Action {
         if (isset($_SESSION['user'])) {
             unset($_SESSION['user']);
 
+            if (isset($_SESSION['playlist'])) {
+                unset($_SESSION['playlist']);
+            }
+
             $message = "Vous avez été déconnecté avec succès.";
         } else {
             $message = "Aucune session utilisateur active.";

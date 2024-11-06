@@ -77,18 +77,18 @@ class SavePlaylistAction extends Action {
 
             foreach ($playlists as $playlist) {
                 $playlistOptions .= <<<HTML
+                <div class="form-save-element">
                     <input type="radio" name="pl_id" value="$playlist->uuid" required>
                     <label>Ajouter <b> $track->title </b> à la playlist <b> $playlist->name </b></label>
-                HTML;
+                </div>
+            HTML;
             }
 
             $html .= <<<HTML
         <h2>Choisissez une playlist :</h2>
-            <form action="?action=save" method="POST">
+            <form action="?action=save" method="POST" class="form-save">
                 $playlistOptions
                 <input type="hidden" name="track_id" value="$trackId">
-                <br>
-                <br>
                 <button type="submit">Ajouter à la playlist sélectionnée</button>
             </form>
         HTML;

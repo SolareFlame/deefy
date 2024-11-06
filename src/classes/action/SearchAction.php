@@ -24,26 +24,37 @@ class SearchAction extends Action {
                 return "Aucun track ou podcaast trouvé avec la recherche fournie";
             }
 
-            $result = 'Résultats de la recherche pour : ' . htmlspecialchars($_GET['query']) . '<br>';
+            $result = '<div class="search">';
+            $result .= 'Résultats de la recherche pour : ' . htmlspecialchars($_GET['query']) . '<br>';
             $result .= 'Pistes trouvées : ' . (count($tracks) + count($podcasts)) . '<br>';
 
             foreach ($tracks as $track) {
                 if ($track instanceof tracks\AlbumTrack) {
+                    $result .= '<div class="track">';
+
                     $renderer = new renderer\AlbumTrackRenderer($track);
                     $result .= $renderer->render(2);
 
                     if ($connected) {
                         $result .= '<a href="?action=save&id=' . $track->uuid . '">Ajouter à une playlist</a>';
                     }
+
+                    $result .= '</div>';
                 }
             }
 
             foreach ($podcasts as $podcast) {
                 if($podcast instanceof tracks\PodcastTrack) {
+                    $result .= '<div class="track">';
+
                     $renderer = new renderer\PodcastRenderer($podcast);
                     $result .= $renderer->render(2);
+
+                    $result .= '</div>';
                 }
             }
+
+            $result .= '</div>';
 
             return $result;
         }
