@@ -3,6 +3,7 @@
 namespace iutnc\deefy\repository;
 
 use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\audio\tracks\PodcastTrack;
 use Ramsey\Uuid\Uuid;
 use iutnc\deefy\audio\lists\Playlist;
 
@@ -67,7 +68,7 @@ class DeefyRepository
         $row = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if (empty($row)) {
-            throw new \Exception("User not found");
+            return [];
         }
         return $row;
     }
@@ -244,6 +245,25 @@ class DeefyRepository
         return $track;
     }
 
+    public function addPodcast(PodcastTrack $track): PodcastTrack
+    {
+        $query = "INSERT INTO podcast (uuid, titre, type, duree, file_name, hotes, annee_sortie) VALUES (:uuid, :titre, :type, :duree, :file_name, :hotes, :annee_sortie)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            'uuid' => $track->uuid,
+            'titre' => $track->title,
+            'type' => $track->gender,
+            'duree' => $track->duration,
+            'file_name' => $track->file_name,
+            'hotes' => json_encode($track->artists), //array -> json
+            'annee_sortie' => $track->date
+        ]);
+
+        return $track;
+    }
+
+
+
     public function findTrackById(string $uuid): AlbumTrack
     {
         $query = "SELECT * FROM track WHERE uuid = :uuid";
@@ -316,7 +336,7 @@ class DeefyRepository
 
 
     /*
-     * RECHERCHE DE TRACK
+     * RECHERCHE DE TRACK / PODCAST
      */
 
     public function searchTracks(string $search): array
@@ -356,6 +376,42 @@ class DeefyRepository
         return $tracks;
     }
 
+    public function searchPodcast(string $search): array
+    {
+        $search = strtolower($search);
+
+        $query = "SELECT * FROM podcast 
+              WHERE LOWER(titre) LIKE :search 
+                 OR JSON_CONTAINS(LOWER(JSON_UNQUOTE(hotes)), :json_search, '$')";
+
+        $stmt = $this->pdo->prepare($query);
+
+        // Utilisez un placeholder pour le terme de recherche JSON
+        $stmt->execute([
+            'search' => '%' . $search . '%',
+            'json_search' => json_encode($search)
+        ]);
+
+        $rows = $stmt->fetchAll();
+        if (empty($rows)) {
+            return [];
+        }
+
+        $podcast = [];
+        foreach ($rows as $row) {
+            $podcast[] = new PodcastTrack(
+                $row['uuid'],
+                $row['titre'],
+                $row['type'],
+                $row['duree'],
+                $row['file_name'],
+                json_decode($row['hotes']),
+                $row['annee_sortie']
+            );
+        }
+
+        return $podcast;
+    }
 }
 
 

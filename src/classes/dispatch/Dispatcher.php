@@ -38,6 +38,9 @@ class Dispatcher {
             case 'add-track':
                 $this->renderPage((new action\addTrackAction())());
                 break;
+            case 'add-podcast':
+                $this->renderPage((new action\AddPodcastAction())());
+                break;
 
             //USER
             case 'signin': //SE CONNECTER
@@ -116,6 +119,7 @@ HTML;
 
         if ($admin) {
             $res .= '<li><a href="?action=add-track">Ajouter un track</a></li>';
+            $res .= '<li><a href="?action=add-podcast">Ajouter un podcast</a></li>';
         }
 
         $res .= <<<HTML

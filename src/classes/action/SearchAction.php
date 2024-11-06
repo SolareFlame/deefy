@@ -18,33 +18,33 @@ class SearchAction extends Action {
 
             $instance = DeefyRepository::getInstance();
             $tracks = $instance->searchTracks($_GET['query']);
+            $podcasts = $instance->searchPodcast($_GET['query']);
 
-            if ($tracks === []) {
-                return "Aucun track trouvé avec la recherche fournie";
+            if ($tracks === [] && $podcasts === []) {
+                return "Aucun track ou podcaast trouvé avec la recherche fournie";
             }
 
             $result = 'Résultats de la recherche pour : ' . htmlspecialchars($_GET['query']) . '<br>';
-            $result .= 'Pistes trouvées : ' . count($tracks) . '<br>';
+            $result .= 'Pistes trouvées : ' . (count($tracks) + count($podcasts)) . '<br>';
 
             foreach ($tracks as $track) {
-                if($track instanceof tracks\PodcastTrack) {
-                    $renderer = new renderer\PodcastRenderer($track);
-                    $result .= $renderer->render(2);
-
-                    if($connected) {
-                        $result .= '<a href="?action=save&id=' . $track->uuid . '">Ajouter à une playlist</a>';
-                    }
-                }
-
-                if($track instanceof tracks\AlbumTrack) {
+                if ($track instanceof tracks\AlbumTrack) {
                     $renderer = new renderer\AlbumTrackRenderer($track);
                     $result .= $renderer->render(2);
 
-                    if($connected) {
+                    if ($connected) {
                         $result .= '<a href="?action=save&id=' . $track->uuid . '">Ajouter à une playlist</a>';
                     }
                 }
             }
+
+            foreach ($podcasts as $podcast) {
+                if($podcast instanceof tracks\PodcastTrack) {
+                    $renderer = new renderer\PodcastRenderer($podcast);
+                    $result .= $renderer->render(2);
+                }
+            }
+
             return $result;
         }
         return "Aucune recherche fournie";
