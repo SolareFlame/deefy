@@ -43,10 +43,9 @@ Cette application permet aux utilisateurs de créer, gérer et personnaliser leu
   - Des protections contre l’injection **XSS** (filter_var) et **SQL** (requetes préparées) sont mises en place.
 
 ## 📝 Notes supplémentaires
-
-Les podcasts ne sont pas utilisés du au manque de fonctionnalités présentes dans le sujet vis-à-vis de leur existance, ils sont donc mélés aux 'tracks'. Il aurait été possible de rajouter une option "ajouter podcast" et remplir la table podcast en base de donnée, néanmoins j'ai jugé cela non pertinant pour Deefy.
-
 Contrairement aux indications du sujet, qui indique "_L’affichage d’une playlist propose toujours d’ajouter une nouvelle piste à la playlist_"; J'ai décidé de retirer cette fonctionnalité aux utilisateurs STANDARD **au profit d'une barre de recherche** et d'une suposée base de musique déjà remplie. Ainsi les utilisateurs, à l'image d'un site de streaming de musique standard, peuvent chercher des musiques dans la base et les ajouter dans des playlists si ils sont connectés.
+
+Le fait de ne pas pouvoir ajouter les podcasts aux playlists est **voulu**, cela permet de différencier les deux types de pistes (et cela parait logique, on écoute pas un podcast comme une musique)
 
 De cette façon, les utilisateurs ADMIN peuvent donc ajouter des musiques à la base publique.
 
